@@ -1,3 +1,20 @@
+<?php 
+session_start();
+$id = $_SESSION['id'];
+include "connection.php";
+if(isset($_POST['submit'])) {
+    $datetime = $_POST['datetime'];
+    $sql = "update form set datetime     = '$datetime' where id = '$id'";
+    if(mysqli_query($conn, $sql)) {
+        $_SESSION['id'] = $id;
+        echo "rescheduled";
+        //header("Location: reschedule.php");
+    } else {
+        echo "Error: " . $sql . "<br>" . mysqli_error($conn);   
+        //echo "<script>alert('Please check the meeting id')</script>";
+    }   
+}
+?>
 <!doctype html>
 <html lang="en">
 
@@ -22,12 +39,12 @@
             <div class="form-box">
                 <img src="img/logo.png" alt="logo" class="mb-4 img-responsive img-fit" width="200px">
                 <h2><i class="far fa-clock"></i> Choose date and time</h2>
-                <form action="">
+                <form action="dt2.php" method="post">
                     <div class="form-group">
-                        <input class="date form-control" placeholder="Date and Time(GMT + 5:30)" />
+                        <input class="date form-control" placeholder="Date and Time(GMT + 5:30)" name="datetime" />
                     </div>
                     <center>
-                        <a class="button" href="thank.php">Re-schedule</a>
+                        <input class="button" type="submit" value="reschedule" name="submit">
                     </center>
                 </form>
             </div>
@@ -46,7 +63,7 @@
     <script>
         var fp = flatpickr('.date', {
             enableTime: true,
-            dateFormat: "d-m-Y H:i",
+            dateFormat: "Y-m-d H:i",
         })
     </script>
 </body>

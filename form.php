@@ -1,7 +1,7 @@
 <?php
 session_start();
 $datetime = $_SESSION['datetime'];
-include 'connnection.php';
+include 'connection.php';
 if($datetime == '') {
     header('Location: dt.php');
 }
